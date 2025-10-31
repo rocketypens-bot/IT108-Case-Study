@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+
+        </title>
+    </head>
+
+    <body>
+        <form id = 'registration'>
+            
+            <label>First Name:</label><br>
+            <input type = "text" id = "fname" required><br>
+
+            <label>Last Name:</label><br>
+            <input type = "text" id = "lname" required><br>
+
+            <label>Contact Number:</label><br>
+            <input type = "text" id = "contact" placeholder= "e.g 09123456789" required><br>
+
+
+
+            <label>Middle Name:</label><br>
+            <input type = "text" id = "mname" required><br>
+
+            <label>Age:</label><br>
+            <input type = "number" id = "age" min = "1" value = "1" required><br>
+
+            <label>Gender:</label><br>
+            <select id = "gender" required>
+                <option value = "Male">Male</option>
+                <option value = "Female">Female</option>
+                <option value = "Non-binary">Non-binary</option>
+                <option value = "preferG">Prefer not to say</option>
+            </select><br>
+
+            <label>Civil Status:</label><br>
+            <select id = "cStatus" required>
+                <option value = "Single">Male</option>
+                <option value = "Married">Female</option>
+                <option value = "preferC">Prefer not to say</option>
+            </select><br>
+
+            <label>Address:</label><br>
+            <input type = "text" id = "address" required><br><br>
+            
+            <input type = "button" value = "Proceed" onclick = "processRegistration()">
+
+        </form>
+
+        <script>
+            function processRegistration(){
+
+                var fname = document.getElementById("fname").value.trim();
+                var lname = document.getElementById("lname").value.trim();
+                var mname = document.getElementById("mname").value.trim();
+                var contact = document.getElementById("contact").value.trim();
+                var age = Number(document.getElementById("fname").value);
+                var gender = document.getElementById("gender").value;
+                var cStatus = document.getElementById("cStatus").value;
+                var address = document.getElementById("address").value.trim();
+
+                //validation
+
+                var namePattern = /^[A-Za-z\s]+$/;
+                var phonePattern = /^09\d{9}$/;
+                var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                 if(!namePattern.test(lname)){
+                    alert("⚠ Please enter a valid name (letters and spaces only).");
+                    return;
+                }
+
+                 if(!namePattern.test(fname)){
+                    alert("⚠ Please enter a valid name (letters and spaces only).");
+                    return;
+                }
+
+                 if(!namePattern.test(mname)){
+                    alert("⚠ Please enter a valid name (letters and spaces only).");
+                    return;
+                }
+                if(!phonePattern.test(contact)){
+                    alert("⚠ Please enter a valid contact number (e.g., 09123456789).");
+                    return;
+                }
+                if(age < 1){
+                    alert("⚠ Please enter a valid age")
+                }
+
+            }
+        </script>
+    </body>
+</html>

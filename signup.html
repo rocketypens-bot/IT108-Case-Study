@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>
+
+        </title>
+    </head>
+
+    <body>
+        <h2>Sign-up Form</h2>
+        <form id = "sign-up">
+
+            <label>Username:</label><br>
+            <input type = "text" id = "userName" required><br>
+
+            <label>Email:</label><br>
+            <input type = "text" id = "email" required><br>
+
+            <label>Password:</label><br>
+            <input type = "password" id = "passWord" required><br>
+
+            <label>Confirm Password:</label><br>
+            <input type = "password" id = "confirmPass" required><br><br>
+
+            <input type = "button" value = "Sign-up" onclick = "nextStep()">
+
+        </form>
+
+        <script>
+            function nextStep(){
+
+                var username = document.getElementById("userName").value.trim();
+                var email = document.getElementById("email").value.trim();
+                var password = document.getElementById("passWord").value;
+                var confirmPass = document.getElementById("confirmPass").value;
+
+                //validation
+
+                var userPattern = /^[a-zA-Z][a-zA-Z0-9_]{2,15}$/;
+                var passPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
+                var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+                if(!userPattern.test(username)){
+                    alert("⚠ Please enter a valid user name (min. 3, max. 16 no spaces).");
+                    return;
+                }
+
+                if(!passPattern.test(password)){
+                    alert("⚠ Please enter a valid password (at least one lower and upper case letters, digit and special symbols, minimum length 8 characters).");
+                    return;
+                }
+
+                if(!emailPattern.test(email)){
+                    alert("⚠ Please enter a valid email address (e.g, abc@efg.com).")
+                    return;
+                }
+
+                if(confirmPass !== password){
+                    alert("⚠ Password does not match")
+                    return;
+                }
+
+                window.location.href = 'registration.html'
+            }
+        </script>
+    </body>
+
+</html>
