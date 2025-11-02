@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "utf-8" />
+        <title>JSON</title>
+        <link rel = 'stylesheet' href = 'styles.css'>
+    </head>
+
+    <body>
+        <div id="app-container">
+        <header id="main-header"><h1>Event Management System</h1></header>
+        <main>
+            <section id="event-form-section" class="data-input-area">
+                <form id = 'recordForm'>
+                    <label>Event Name:<br><input type = 'text' id = 'event_name'></label><br>
+                    <label>Event Type:<br><input type = 'text' id = 'event_type'></label><br>
+                    <label for = 'event_date'>Select an event date:</label><br>
+                    <input type = 'date' id = 'event_date' name = 'event_date'><br>
+                    <label for = 'event_time'>Time:</label><br>
+                    <input type= 'time' id = 'event_time' name = 'event_time'><br>
+                    <label>Venue:<br><input type = 'text' id = 'event_venue'></label><br>
+                    <button onclick = 'saveRecord()'>Save</button>
+                </form>
+            </section>
+
+        <hr>
+        <section id="saved-records-section" class="data-display-area"></section>
+            <h2>Saved Records</h2>
+            <div id="table-container">
+                <table border = '1' id = 'recordsTable' class = 'event-table'>
+                    <thead>
+                        <tr>
+                            <th>Event Name</th>
+                            <th>Event Type</th>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Venue</th>
+                            <th>Action</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+        <script>
+            //The storage key we will use in localStorage const DB_KEY = 'event_db_v1';
+            const DB_KEY = 'event_db_v1'
+            //Seed data: used when no DB exists yet
+            const seedData = [
+                {event_name: 'Hackathons', event_type: 'Academic', event_date: '2025-06-01', event_time: '9:00', event_venue: 'Aula Minor'},
+                {event_name: 'Basketball Competition', event_type: 'Extracurricular', event_date: '2025-08-10', event_time: '11:00', event_venue: 'PCC Gym'},
+                {event_name: 'Talent Show', event_type: 'Extracurricular', event_date: '2025-12-18', event_time: '12:00', event_venue: 'PCC Grounds'},
+                {event_name: 'Exhibit', event_type: 'Academic', event_date: '2026-02-21', event_time: '8:00', event_venue: 'Room 401'}
+            ];
+
+            //load the DB later
+            let db = [];
+            let editIndex = -1
+            //Load DB: try localStorage, otherwise use seed
+            function loadDB(){
+                const raw = localStorage.getItem(DB_KEY);
+                if (raw){
+                    try{
+                        db = JSON.parse(raw);
+                    }catch(e){
+                        console.error('Failed to parse DB from localStorage, resetting to seed:', e);
+                        db = [...seedData];
+                        saveDB();
+                    }
+                }else{
+                    db = [...seedData];
+                    saveDB();
+                }
+            }
+            
+            //Save DB to localStorage
+            function saveDB(){
+                localStorage.setItem(DB_KEY,JSON.stringify(db));
+            }
+
+            //Display Table
+            function displayRecord(){
+                const table = document.getElementById('recordsTable');
+                table.innerHTML = '<tr><th>Event Name</th><th>Event Type</th><th>Date</th><th>Time</th><th>Venue</th><th>Action</th></tr>'; //Reset header
+                db.forEach(r => {table.innerHTML += `<tr><td>${r.event_name}</td>
+                    <td>${r.event_type}</td>
+                    <td>${r.event_date}</td>
+                    <td>${r.event_time}</td>
+                    <td>${r.event_venue}</td>
+                    <td>
+                        <button type="button" onclick="editRecord('${r.event_name}')">Edit</button>
+                        <button type="button" onclick="deleteRecord('${r.event_name}')">Delete</button>
+                    </td>
+                    </tr>`});
+                
+            }
+            
+            //Immediately load DB on page load
+            loadDB();
+
+            function saveRecord(){
+                //Read inputs
+                const event_name = document.getElementById('event_name').value;
+                const event_type = document.getElementById('event_type').value;
+                const event_date = document.getElementById('event_date').value;
+                const event_time = document.getElementById('event_time').value;
+                const event_venue = document.getElementById('event_venue').value;
+                //Create record object
+                const newRecord = {event_name, event_type, event_date, event_time, event_venue};
+                //Add or edit record to array
+                if(editIndex === -1){
+                    db.push({event_name, event_type, event_date, event_time, event_venue});
+                    alert('Record saved successfully!');
+                }else{
+                    db[editIndex] = {event_name, event_type, event_date, event_time, event_venue};
+                    editIndex = -1;
+                    alert('Record edit successfully!');
+                }
+                //Save to localStorage
+                saveDB();
+                displayRecord();
+                console.log('Record saved', newRecord);
+                //Clear form fields
+                document.getElementById('recordForm').reset();
+            }
+            //Edit Record
+            function editRecord(event_name){
+                const idx = db.findIndex(r => r.id === id);
+                if(idx === -1) return;
+
+                const record = db[idx];
+                event_name.value = record.event_name;
+                event_type.value =  record.event_type;
+                event_date.value = record.event_date;
+                event_time.value = record.event_time;
+                event_venue.value = record.event_venue;
+                editIndex = idx;
+            
+            
+            }
+            //Delete Record
+            function deleteRecord(event_name){
+                //Confirm first
+                const ok = confirm(`Delete record with Event Name ${event_name}?`);
+                if(!ok)return;
+                //Find Index
+                const idx = db.findIndex(r => r.event_name === event_name);
+                if(idx === -1){
+                    alert('Record not found.');
+                    return;
+                }
+            //Remove and Save
+            db.splice(idx, 1);
+            saveDB();
+            displayRecord();
+            }
+            
+            loadDB();
+            displayRecord();
+        </script>
+    </body>
+</html>

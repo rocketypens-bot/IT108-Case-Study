@@ -1,0 +1,141 @@
+/* --- Global Styles & Layout --- */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9; /* Light background for the whole page */
+    color: #333;
+    line-height: 1.6;
+    padding: 20px;
+}
+
+#app-container {
+    max-width: 1000px; /* Max width for centering content */
+    margin: 0 auto; /* Center the container */
+    background-color: #ffffff; /* White background for the app area */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 30px;
+    border-radius: 8px;
+}
+
+#main-header {
+    text-align: center;
+    border-bottom: 3px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+h1 {
+    color: #007bff;
+}
+
+/* --- Form Section Styling --- */
+
+#event-form-section {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #555;
+    margin-top: 0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+    /* Use Flexbox to align labels and inputs for better control */
+    display: flex;
+    flex-direction: column; 
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.form-group input[type="text"],
+.form-group input[type="date"],
+.form-group input[type="time"] {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Make inputs take full width of their container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.form-actions {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.form-actions button {
+    background-color: #28a745; /* Green color for Save button */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.form-actions button:hover {
+    background-color: #218838;
+}
+
+/* --- Table Section Styling --- */
+
+#saved-records-section {
+    margin-top: 30px;
+}
+
+.event-table {
+    width: 100%;
+    border-collapse: collapse; /* Removes double borders */
+    margin-top: 15px;
+}
+
+.event-table thead tr {
+    background-color: #007bff;
+    color: white;
+}
+
+.event-table th, .event-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.event-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2; /* Zebra striping for readability */
+}
+
+/* Action Buttons in Table */
+.event-table td button {
+    padding: 5px 10px;
+    margin-right: 5px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.event-table td button:first-child { /* Edit button */
+    background-color: #ffc107;
+    color: #333;
+}
+
+.event-table td button:last-child { /* Delete button */
+    background-color: #dc3545;
+    color: white;
+}
+
+.event-table td button:first-child:hover {
+    background-color: #e0a800;
+}
+
+.event-table td button:last-child:hover {
+    background-color: #c82333;
+}
