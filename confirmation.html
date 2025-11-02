@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <div class="details-box">
+        <p>Thank you! Please review your details below.</p>
+        <div id="output">
+            Loading details...
+        </div>
+    </div>
+
+    <script>
+        function loadConfirmationDetails() {
+
+            var outputDiv = document.getElementById('output');
+            var storedData = localStorage.getItem('latestUser');
+            if (storedData) {
+                var data = JSON.parse(storedData);
+                var detailsHTML = 
+                    '<p><strong>First Name:</strong> ' + data.firstName + '</p>' +
+                    '<p><strong>Last Name:</strong> ' + data.lastName + '</p>' +
+                    '<p><strong>Middle Name:</strong> ' + data.middleName + '</p>' +
+                    '<p><strong>Age:</strong> ' + data.age + '</p>' +
+                    '<p><strong>Gender:</strong> ' + data.gender + '</p>' +
+                    '<p><strong>Civil Status:</strong> ' + data.civilStatus + '</p>' +
+                    '<p><strong>Address:</strong> ' + data.address + '</p>' +
+                    '<p><strong>Contact Number:</strong> ' + data.contactNumber + '</p>';
+                outputDiv.innerHTML = detailsHTML;
+            }else {
+                outputDiv.innerHTML = '<p style="color: red;">No registration data found. Please go back and complete the form.</p>';
+            }
+             
+        }
+        window.onload = loadConfirmationDetails;
+    </script>
+</body>
+</html>
