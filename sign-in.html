@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <title>
+
+        </title>
+
+    </head>
+
+    <body>
+        <h2>Sign-in</h2>
+
+        <form id = 'sign-up'>
+
+            <label>Username:</label><br>
+            <input type = 'text' id = userName placeholder = 'Username or Email' required>
+            <label>Password:</label><br>
+            <input type = 'password' id = passWord placeholder = 'Password' required>
+            <button type = 'submit' value = 'signin' onclick = 'attemptSignin()'>Login</button>
+
+        </form>
+
+        <p>Don't have an account <a href = 'sign-up.html'>Sign-up here</a></p>
+
+        <script>
+            const getUsers = () => {
+            const usersJSON = localStorage.getItem('registeredUsers');
+            return usersJSON ? JSON.parse(usersJSON) : {};
+        };
+
+        function attemptSignin(){
+            var signIn = document.getElementById('userName').value.trim();
+            var passWord = document.getElementById('passWord').value;
+
+            let users = getUsers();
+            let userEmail = userName;
+
+            // 1. Determine the actual email address
+            // Search through the users object values to find a matching username
+            const storedUser = Object.values(users).find(
+                user => user.username === loginId || Object.keys(users).includes(loginId)
+            );
+
+            // 2. Check if a user was found (by email or username)
+            if(users[loginId]){
+                userEmail = loginID;
+            } else {
+                var foundUser = Object.entries(users.find(([email, user]) => user.username === userName));
+                if(foundUser){
+                    userEmail = foundUser[0];
+                } else {
+                    alert('⚠ Error: Account not found. Please check your login details');
+                    return;
+                }
+            }
+
+            // 3. Retrieve the final user data using the determined email key
+            var userData = user[userEmail];
+
+            // 4. Validate the password
+            if(userData.password === passWord){
+                alert(`Sign-in Successful! Welcome back, ${userData.username}.`);
+
+            } else {
+                alert('⚠ Error: Invalid password.');
+            }
+        }
+        </script>
+
+    </body>
+</html>

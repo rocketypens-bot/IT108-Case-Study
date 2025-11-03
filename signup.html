@@ -28,6 +28,14 @@
         </form>
 
         <script>
+
+            const getUsers = () => {const usersJSON = localStorage.getItem('registeredUsers');
+            return usersJSON ? JSON.parse(usersJSON) : {};
+            };
+
+            const saveUsers = (users) => {localStorage.setItem('registeredUsers', JSON.stringify(users));
+            };
+
             function nextStep(){
 
                 var username = document.getElementById("userName").value.trim();
@@ -60,6 +68,24 @@
                     alert("⚠ Password does not match")
                     return;
                 }
+
+                let users = getUsers();
+
+                const userByUsername = Object.values(users).find(user => user.username === username);
+                if(users[email] || userByUsername){
+                alert("❌ Error: An account with this email or username already exists.");
+                return;
+                }
+
+                const userData = {
+                username: username,
+                password: password,
+                }
+
+                users[email] = userData;
+                saveUsers(users);
+
+                alert(`✅ Sign-up Successful! Welcome, ${username}.`);
 
                 window.location.href = 'registration.html'
             }
