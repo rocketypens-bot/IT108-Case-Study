@@ -1,4 +1,4 @@
-📚 Project Documentation: Full HTML/JS Application
+📚 Project Documentation:
 This project combines two distinct, client-side web applications using standard HTML, CSS, and vanilla JavaScript. All data for both applications is stored in the browser's localStorage.
 
 1. ⚙️ Part 1: User Management Flow
