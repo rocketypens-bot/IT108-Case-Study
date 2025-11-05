@@ -8,14 +8,15 @@
     </head>
 
     <body>
-        <h2>Sign-up Form</h2>
-        <form id = "sign-up">
+        <h2>Create an Account</h2>
+
+        <form id = "signup-form">
 
             <label>Username:</label><br>
             <input type = "text" id = "userName" required><br>
 
             <label>Email:</label><br>
-            <input type = "text" id = "email" required><br>
+            <input type = "email" id = "email" required><br>
 
             <label>Password:</label><br>
             <input type = "password" id = "passWord" required><br>
@@ -23,39 +24,52 @@
             <label>Confirm Password:</label><br>
             <input type = "password" id = "confirmPass" required><br><br>
 
-            <input type = "button" value = "Sign-up" onclick = "nextStep()">
+            <button type="submit">Sign-up</button>
 
         </form>
 
         <script>
 
-            const getUsers = () => {const usersJSON = localStorage.getItem('registeredUsers');
-            return usersJSON ? JSON.parse(usersJSON) : {};
-            };
-
-            const saveUsers = (users) => {localStorage.setItem('registeredUsers', JSON.stringify(users));
+            const getUsersArray = () => {
+                const usersJSON = localStorage.getItem('registeredUsers');
+                if (!usersJSON) return [];
+                
+                try {
+                    const storedData = JSON.parse(usersJSON);
+                    if (Array.isArray(storedData)) {
+                        return storedData; 
+                    } else if (typeof storedData === 'object' && storedData !== null) {
+                        return Object.values(storedData); 
+                    }
+                } catch (e) {
+                    console.error("Error retrieving user data:", e);
+                }
+                return []; // Fallback
             };
 
             function nextStep(){
+
+                event.preventDefault();
 
                 var username = document.getElementById("userName").value.trim();
                 var email = document.getElementById("email").value.trim();
                 var password = document.getElementById("passWord").value;
                 var confirmPass = document.getElementById("confirmPass").value;
-
+                
                 //validation
+                if (!document.getElementById("signup-form").checkValidity()) return;
 
                 var userPattern = /^[a-zA-Z][a-zA-Z0-9_]{2,15}$/;
                 var passPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@.#$!%*?&])[A-Za-z\d@.#$!%*?&]{8,15}$/;
                 var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
                 if(!userPattern.test(username)){
-                    alert("⚠ Please enter a valid user name (min. 3, max. 16 no spaces).");
+                    alert("⚠ Username: Must start with a letter, 3-16 chars, only letters, numbers, or underscores.");
                     return;
                 }
 
                 if(!passPattern.test(password)){
-                    alert("⚠ Please enter a valid password (at least one lower and upper case letters, digit and special symbols, minimum length 8 characters).");
+                    alert("⚠ Password: Must contain 8-15 chars, including 1 upper, 1 lower, 1 digit, and 1 special symbol.");
                     return;
                 }
 
@@ -69,27 +83,44 @@
                     return;
                 }
 
-                let users = getUsers();
+                // 3. Uniqueness Check 
+                let usersArray = getUsersArray();
 
-                const userByUsername = Object.values(users).find(user => user.username === username);
-                if(users[email] || userByUsername){
-                alert("❌ Error: An account with this email or username already exists.");
-                return;
+                const exists = usersArray.some(user => 
+                    user.username === username || user.email === email
+                );
+
+                if (exists) {
+                    alert("⚠ Error: An account with this email or username already exists.");
+                    return;
                 }
 
+                // 4. Store New User
                 const userData = {
-                username: username,
-                password: password,
-                }
+                    username: username,
+                    email: email,
+                    password: password,
+                    registrationDate: new Date().toLocaleString()
+                    };
 
-                users[email] = userData;
-                saveUsers(users);
+                // Add the new user to the array
+                usersArray.push(userData);
 
-                alert(`✅ Sign-up Successful! Welcome, ${username}.`);
+                // Save the updated array
+                localStorage.setItem('registeredUsers', JSON.stringify(usersArray));
+
+                // Save the latest user to quickly access details on the next page
+                localStorage.setItem('latestUser', JSON.stringify(userData));
+
+                alert(`✅ Sign-up Successful! Welcome, ${username}. You will now proceed to complete your profile.`);
 
                 window.location.href = 'registration.html'
             }
+
+            // Attach the submit listener to the form
+            document.getElementById('signup-form').addEventListener('submit', nextStep);
         </script>
+
     </body>
 
 </html>

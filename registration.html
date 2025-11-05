@@ -42,13 +42,47 @@
             <label>Contact Number:</label><br>
             <input type = "text" id = "contact" placeholder= "e.g 09123456789" required><br>
 
-            <input type = "button" value = "Proceed" onclick = "processRegistration()">
+            <button type="submit">Review & Continue</button>
 
         </form>
 
         <script>
+
+            const getUsersArray = () => {
+                const usersJSON = localStorage.getItem('registeredUsers');
+                if (!usersJSON) return [];
+                try {
+                    const storedData = JSON.parse(usersJSON);
+                    if (Array.isArray(storedData)) return storedData;
+                    if (typeof storedData === 'object' && storedData !== null) return Object.values(storedData);
+                } catch (e) {
+                    console.error("Error retrieving user data:", e);
+                }
+                return [];
+            };
+
             function processRegistration(){
 
+                event.preventDefault(); 
+                var form = document.getElementById('registration');
+
+                if (!form.checkValidity()) {
+                    return; 
+                }
+
+                // 1. Get Login Data & All Users
+
+                const latestUserJSON = localStorage.getItem('latestUser');
+                if (!latestUserJSON) {
+                    alert("Fatal Error: Could not find account data. Please sign up again.");
+                    window.location.href = 'signup.html';
+                    return;
+                }
+
+                const latestUserData = JSON.parse(latestUserJSON);
+                var usersArray = getUsersArray();
+
+               // 2. Gather Personal Details
                 var fname = document.getElementById("fname").value.trim();
                 var lname = document.getElementById("lname").value.trim();
                 var mname = document.getElementById("mname").value.trim();
@@ -88,30 +122,38 @@
                 if(address === ""){
                     alert("⚠ Please enter your address")
                 }
-            var newUser = {
-            firstName: fname,
-            lastName: lname,
-            middleName: mname,
-            age: age,
-            gender: gender,
-            civilStatus: cStatus,
-            address: address,
-            contactNumber: contact,
-            registrationDate: new Date().toLocaleString()
+            
+            var completeUser = {
+                ...latestUserData,
+                firstName: fname,
+                lastName: lname,
+                middleName: mname,
+                age: age,
+                gender: gender,
+                civilStatus: cStatus,
+                address: address,
+                contactNumber: contact,
+                profileCompletionDate: new Date().toLocaleString()
             };
 
-            var existingUsersJSON = localStorage.getItem('registeredUsers');
-            var usersArray = existingUsersJSON ? JSON.parse(existingUsersJSON) : [];
-            usersArray.push(newUser);
-            
-            localStorage.setItem('registeredUsers', JSON.stringify(usersArray));
+           const userIndex = usersArray.findIndex(
+                user => user.username === completeUser.username
+            );
 
-            localStorage.setItem('latestUser', JSON.stringify(newUser));
+            if (userIndex !== -1) {
+                usersArray[userIndex] = completeUser;
+                localStorage.setItem('registeredUsers', JSON.stringify(usersArray));
+                localStorage.setItem('latestUser', JSON.stringify(completeUser));
                 
-            alert("Registration Successful! Proceeding to confirmation page.");
-
-            window.location.href = 'confirmation.html'
+                alert("Profile details saved! Proceeding to confirmation.");
+                window.location.href = 'confirmation.html';
+                } else {
+                    alert('⚠ ErrorL Could not find your account to update. Please try signing up again.')
+                }
+            
             }
+
+            document.getElementById('registration').addEventListener('submit', processRegistration);
         </script>
     </body>
 </html>
