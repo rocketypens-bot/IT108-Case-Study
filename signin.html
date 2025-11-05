@@ -12,13 +12,13 @@
     <body>
         <h2>Sign-in</h2>
 
-        <form id = 'sign-up'>
+        <form id = 'sign-in-form'>
 
             <label>Username:</label><br>
             <input type = 'text' id = userName placeholder = 'Username or Email' required><br><br>
             <label>Password:</label><br>
             <input type = 'password' id = passWord placeholder = 'Password' required><br><br>
-            <button type = 'submit' value = 'signin' onclick = 'attemptSignin()'>Login</button><br>
+            <button type='submit'>Login</button><br>
 
         </form>
 
@@ -27,47 +27,49 @@
         <script>
             const getUsers = () => {
             const usersJSON = localStorage.getItem('registeredUsers');
-            return usersJSON ? JSON.parse(usersJSON) : {};
+            try {
+                    const storedData = JSON.parse(usersJSON);
+                    if (Array.isArray(storedData)) return storedData;
+                    if (typeof storedData === 'object' && storedData !== null) return Object.values(storedData);
+                } catch (e) {
+                    console.error("Error retrieving user data:", e);
+                }
+                return [];
         };
 
         function attemptSignin(){
-            var signIn = document.getElementById('userName').value.trim();
+            event.preventDefault();
+
+            var loginId = document.getElementById('userName').value.trim();
             var passWord = document.getElementById('passWord').value;
 
-            let users = getUsers();
-            let userEmail = userName;
-
-            // 1. Determine the actual email address
-            // Search through the users object values to find a matching username
-            const storedUser = Object.values(users).find(
-                user => user.username === loginId || Object.keys(users).includes(loginId)
+            let usersArray = getUsers();
+            // Find user by username or email
+            var storedUser = usersArray.find(user => 
+                user.username === loginId || 
+                user.email === loginId 
             );
 
-            // 2. Check if a user was found (by email or username)
-            if(users[loginId]){
-                userEmail = loginID;
-            } else {
-                var foundUser = Object.entries(users.find(([email, user]) => user.username === userName));
-                if(foundUser){
-                    userEmail = foundUser[0];
-                } else {
-                    alert('⚠ Error: Account not found. Please check your login details');
-                    return;
+            if (!storedUser) {
+                alert('⚠ Login Error: Account not found. Please check your details or sign up.');
+                return;
+            }
+
+            // 3. Validate the password
+                if (storedUser.password === passWord) {
+                    alert(`✅ Sign-in Successful! Welcome back, ${storedUser.firstName || storedUser.username}.`);
+                    // Save the user object to localStorage under a new key
+                    localStorage.setItem('currentUser', JSON.stringify(storedUser));
+                    //REDIRECT TO EVENT MANAGEMENT SYSTEM
+                    window.location.href = 'eventms.html';
+                    } else {
+                    alert('⚠ Login Error: Invalid password.');
                 }
-            }
 
-            // 3. Retrieve the final user data using the determined email key
-            var userData = user[userEmail];
 
-            // 4. Validate the password
-            if(userData.password === passWord){
-                alert(`Sign-in Successful! Welcome back, ${userData.username}.`);
-
-            } else {
-                alert('⚠ Error: Invalid password.');
-            }
+            
         }
+        document.getElementById('sign-in-form').addEventListener('submit', attemptSignin);
         </script>
-
     </body>
 </html>
