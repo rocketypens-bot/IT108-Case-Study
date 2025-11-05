@@ -19,7 +19,7 @@
                     <label for = 'event_time'>Time:</label><br>
                     <input type= 'time' id = 'event_time' name = 'event_time'><br>
                     <label>Venue:<br><input type = 'text' id = 'event_venue'></label><br>
-                    <button onclick = 'saveRecord()'>Save</button>
+                    <button type = 'submit' id = 'saveBtn'>Save</button>
                 </form>
             </section>
 
@@ -59,7 +59,17 @@
             //load the DB later
             let db = [];
             let editIndex = -1
-            //Load DB: try localStorage, otherwise use seed
+            var form = document.getElementById('recordForm');
+            var saveButton = document.getElementById('saveBtn');
+
+            // DOM element references
+            var inputEventName = document.getElementById('event_name');
+            var inputEventType = document.getElementById('event_type');
+            var inputEventDate = document.getElementById('event_date');
+            var inputEventTime = document.getElementById('event_time');
+            var inputEventVenue = document.getElementById('event_venue');
+
+            //Load DB
             function loadDB(){
                 const raw = localStorage.getItem(DB_KEY);
                 if (raw){
@@ -83,25 +93,42 @@
 
             //Display Table
             function displayRecord(){
-                const table = document.getElementById('recordsTable');
-                table.innerHTML = '<tr><th>Event Name</th><th>Event Type</th><th>Date</th><th>Time</th><th>Venue</th><th>Action</th></tr>'; //Reset header
-                db.forEach(r => {table.innerHTML += `<tr><td>${r.event_name}</td>
-                    <td>${r.event_type}</td>
-                    <td>${r.event_date}</td>
-                    <td>${r.event_time}</td>
-                    <td>${r.event_venue}</td>
-                    <td>
-                        <button type="button" onclick="editRecord('${r.event_name}')">Edit</button>
-                        <button type="button" onclick="deleteRecord('${r.event_name}')">Delete</button>
-                    </td>
-                    </tr>`});
+                const tbody = document.getElementById('recordsTable').querySelector('tbody');
                 
+                // Clear old rows
+                tbody.innerHTML = ''; 
+
+                db.forEach((r, index) => {
+                    const row = tbody.insertRow();
+                    row.insertCell().textContent = r.event_name;
+                    row.insertCell().textContent = r.event_type;
+                    row.insertCell().textContent = r.event_date;
+                    row.insertCell().textContent = r.event_time;
+                    row.insertCell().textContent = r.event_venue;
+                    
+                    const actionCell = row.insertCell();
+                    // Use index for reliable editing/deleting, not event_name
+                    actionCell.innerHTML = `
+                        <button type="button" onclick="editRecord(${index})">Edit</button>
+                        <button type="button" onclick="deleteRecord(${index})">Delete</button>
+                    `;
+                });
             }
             
             //Immediately load DB on page load
             loadDB();
 
             function saveRecord(){
+
+                event.preventDefault(); // Stop form submission/page reload
+
+                // Input validation check
+
+                if (!form.checkValidity()) {
+                    alert('Please fill out all required fields.');
+                    return;
+                }
+
                 //Read inputs
                 const event_name = document.getElementById('event_name').value;
                 const event_type = document.getElementById('event_type').value;
@@ -112,11 +139,20 @@
                 const newRecord = {event_name, event_type, event_date, event_time, event_venue};
                 //Add or edit record to array
                 if(editIndex === -1){
-                    db.push({event_name, event_type, event_date, event_time, event_venue});
+                    if (db.some(r => r.event_name === event_name)) {
+                        alert('Error: An event with this name already exists.');
+                        return;
+                    }
+                    db.push(newRecord);
                     alert('Record saved successfully!');
                 }else{
-                    db[editIndex] = {event_name, event_type, event_date, event_time, event_venue};
+                    if (db.some((r, i) => r.event_name === event_name && i !== editIndex)) {
+                        alert('Error: An event with this name already exists.');
+                        return;
+                    }
+                    db[editIndex] = newRecord;
                     editIndex = -1;
+                    saveButton.textContent = 'Save';
                     alert('Record edit successfully!');
                 }
                 //Save to localStorage
@@ -127,39 +163,47 @@
                 document.getElementById('recordForm').reset();
             }
             //Edit Record
-            function editRecord(event_name){
-                const idx = db.findIndex(r => r.id === id);
-                if(idx === -1) return;
+            function editRecord(index){
+                var record = db[index];
+                if(!record) return;
 
-                const record = db[idx];
-                event_name.value = record.event_name;
-                event_type.value =  record.event_type;
-                event_date.value = record.event_date;
-                event_time.value = record.event_time;
-                event_venue.value = record.event_venue;
-                editIndex = idx;
-            
-            
+                // Populate the form fields using their DOM element references
+
+                inputEventName.value = record.event_name;
+                inputEventType.value = record.event_type;
+                inputEventDate.value = record.event_date;
+                inputEventTime.value = record.event_time;
+                inputEventVenue.value = record.event_venue;
+                
+                // Set the global editIndex and update button text
+                editIndex = index;
+                saveButton.textContent = 'Update';
+
+                inputEventName.focus();
             }
             //Delete Record
-            function deleteRecord(event_name){
+            function deleteRecord(index){
+                const recordToDelete = db[index];
+                if(!recordToDelete) return;
                 //Confirm first
-                const ok = confirm(`Delete record with Event Name ${event_name}?`);
+                const ok = confirm(`Delete event: ${recordToDelete.event_name}?`);
                 if(!ok)return;
                 //Find Index
-                const idx = db.findIndex(r => r.event_name === event_name);
-                if(idx === -1){
-                    alert('Record not found.');
-                    return;
-                }
+               db.splice(index, 1);
+                saveDB();
+                displayRecord();
+                alert('Record deleted successfully.');
             //Remove and Save
-            db.splice(idx, 1);
+            db.splice(index, 1);
             saveDB();
             displayRecord();
             }
             
             loadDB();
             displayRecord();
+
+            // Attach saveRecord to the form submit event
+            form.addEventListener('submit', saveRecord);
         </script>
     </body>
 </html>
