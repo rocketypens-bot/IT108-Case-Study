@@ -42,18 +42,3 @@ h2 {
 #about-content p {
     margin-bottom: 15px;
 }
-
-nav  {
-      text-decoration: none;
-      color: #333;
-      margin-left: 20px;
-      font-weight: 500;
-      transition: color 0.3s;
-      position: fixed;
-      top: 0;
-      right: 0;
-    }
-
-nav :hover {
-      color: #ff5a5f;
-    }
