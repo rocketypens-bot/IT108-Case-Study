@@ -32,6 +32,18 @@
       z-index: 100;
     }
 
+    .logo-group {
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        
+        .logo-img {
+            height: 32px; 
+            width: 32px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
     header h1 {
       color: #ff5a5f;
       font-weight: 700;
@@ -52,7 +64,7 @@
 
     /* Hero Section */
     .hero {
-      background: url('https://images.unsplash.com/photo-1561484930-998b6a7c17e8?auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      background: url('https://scontent.fmnl3-2.fna.fbcdn.net/v/t39.30808-6/560478441_1391585232678007_2148687494522733126_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=127cfc&_nc_eui2=AeGy6i0a7XyrTtMT-qWs-LA1BzaSMFvdOx0HNpIwW907Hcl_PLf0MtXmHi8B_eKXzeso1kiDqdMMIAU1kickDs4i&_nc_ohc=gijsBF0Vx_YQ7kNvwEuJs6Z&_nc_oc=Admah5Ar8rEfUVLyj5rdMeRhgLTBv-14OFqRZU93-Gn_xrnl7Y0j4DkP8QA6NmGwhaE&_nc_zt=23&_nc_ht=scontent.fmnl3-2.fna&_nc_gid=qwKzBf2sFJf0JJtIk2Wgbg&oh=00_AfiH-fdGUfFCWtu0aC0Eujg7OZd506a5xDpvFoGCpkp0gw&oe=6921295B') no-repeat center center/cover;
       height: 100vh;
       display: flex;
       justify-content: center;
@@ -176,7 +188,14 @@
 <body>
 
   <header>
-    <h1>Pasig Catholic College</h1>
+        <div class="logo-group">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQg2DmBLvmm081FlfPMWKJS0j9EXdD57I9Bg&s" 
+                 alt="Event Logo Icon" 
+                 class="logo-img">
+            <h1>Pasig Catholic College</h1>
+        </div>
+
+    
     <nav>
       <a href="index.html">Home</a>
       <a href="signin.html">Sign-in</a>
@@ -187,7 +206,7 @@
     <div class="hero-content">
       <h2>We Make Every Event Unforgettable</h2>
       <p>Information Technology Society</p>
-      <button>Get Started</button>
+      <button><a href="signin.html">Get Started</a></button>
     </div>
   </section>
 
@@ -195,17 +214,17 @@
     <h2>Developers</h2>
     <div class="service-cards">
       <div class="card">
-        <img src="" alt="Weddings">
+        <img src="" alt="photo">
         <h3>Pascual, Kyle Jimfred N.</h3>
         <p>BSIT 2B</p>
       </div>
       <div class="card">
-        <img src="Images\cambe.jpg" alt="Corporate Events">
+        <img src="Images\cambe.jpg" alt="photo">
         <h3>Cambe, Christian Arvin</h3>
         <p>BSIT 2B</p>
       </div>
       <div class="card">
-        <img src="Images\comia.jpg" alt="Parties">
+        <img src="Images\comia.jpg" alt="photo">
         <h3>Comia, Alfred</h3>
         <p>BSIT 2B</p>
       </div>
