@@ -1,28 +1,29 @@
+/* Center everything */
 body {
     font-family: Arial, sans-serif;
     background: #ffe5e5;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
     height: 100vh;
     margin: 0;
-}
-
-#signup-form, 
-#sign-in-form {
-    background: white;
-    padding: 25px;
-    width: 300px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-    border-top: 4px solid red;
+    flex-direction: column;  /* stack h2 and form */
 }
 
 h2 {
     text-align: center;
     margin-bottom: 20px;
-    margin-right: 150px;
     color: red;
+}
+
+#signup-form {
+    background: white;
+    padding: 25px;
+    width: 320px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    border-top: 4px solid red;
+    box-sizing: border-box;
 }
 
 label {
@@ -34,6 +35,7 @@ input {
     width: 100%;
     padding: 10px;
     margin-top: 5px;
+    margin-bottom: 15px;
     border: 1px solid red;
     border-radius: 5px;
     box-sizing: border-box;
@@ -42,7 +44,6 @@ input {
 button {
     width: 100%;
     padding: 10px;
-    margin-top: 15px;
     background: red;
     color: white;
     border: none;
