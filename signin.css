@@ -1,72 +1,68 @@
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        background: #ffe5e5; /* light red background */
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-    }
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
 
-    #sign-in-form {
-        background: white;
-        padding: 25px;
-        width: 300px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-        border-top: 4px solid red;
-    }
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center; /* horizontal center */
+  align-items: center;     /* vertical center */
+  background: #f0f0f0;    /* light gray background */
+}
 
-    h2 {
-        text-align: center;
-        margin-bottom: 20px;
-        color: red;
-    }
+form {
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  width: 300px;
+  text-align: center;
+}
 
-    label {
-        font-weight: bold;
-        color: #b30000;
-    }
+h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ff5a5f;
+}
 
-    input {
-        width: 100%;
-        padding: 10px;
-        margin-top: 5px;
-        border: 1px solid red;
-        border-radius: 5px;
-        box-sizing: border-box;
-    }
+input {
+  width: 100%;
+  padding: 0.7rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
 
-    button {
-        width: 100%;
-        padding: 10px;
-        margin-top: 10px;
-        background: red;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 16px;
-    }
+button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #ff5a5f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
 
-    button:hover {
-        background: #cc0000;
-    }
+button:hover {
+  background-color: #ff2f3a;
+}
 
-    p {
-        text-align: center;
-        margin-top: 15px;
-        color: #800000;
-    }
+p {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
 
-    a {
-        color: red;
-        text-decoration: none;
-        font-weight: bold;
-    }
+p a {
+  color: #ff5a5f;
+  text-decoration: none;
+}
 
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
+p a:hover {
+  text-decoration: underline;
+}
+
