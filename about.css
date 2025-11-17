@@ -1,0 +1,44 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body styling: center everything */
+body {
+    background: #ffe5e5; /* same pink background */
+    display: flex;
+    justify-content: center; /* horizontal center */
+    align-items: center;     /* vertical center */
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+/* Heading */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: red;
+}
+
+/* About content card */
+#about-content {
+    background: white;
+    padding: 25px;
+    width: 400px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    border-top: 4px solid red;
+    box-sizing: border-box;
+    text-align: justify; /* makes paragraph text clean */
+    color: #800000; /* dark red text */
+    line-height: 1.6;
+}
+
+/* Paragraph spacing */
+#about-content p {
+    margin-bottom: 15px;
+}
